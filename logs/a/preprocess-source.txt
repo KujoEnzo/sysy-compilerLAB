@@ -1,0 +1,22 @@
+741:int fact(int n) {
+742-    int i = 2;
+743-    int result = 1;
+744-
+745-    while (i <= n) {
+746-        result = result * i;
+747-        i = i + 1;
+748-    }
+749-
+750-    return result;
+751-}
+752-
+753-int main(void) {
+754-    int n;
+755-
+756-    if (scanf("%d", &n) != 1) {
+757-        return 1;
+758-    }
+759-
+760-    printf("%d\n", fact(n));
+761-    return 0;
+762-}

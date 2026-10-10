@@ -1,0 +1,18 @@
+define dso_local i32 @fact(i32 noundef %n) #0 {
+entry:
+  br label %while.cond
+
+while.cond:                                       ; preds = %while.body, %entry
+  %i.0 = phi i32 [ 2, %entry ], [ %add, %while.body ]
+  %result.0 = phi i32 [ 1, %entry ], [ %mul, %while.body ]
+  %cmp = icmp sle i32 %i.0, %n
+  br i1 %cmp, label %while.body, label %while.end
+
+while.body:                                       ; preds = %while.cond
+  %mul = mul nsw i32 %result.0, %i.0
+  %add = add nsw i32 %i.0, 1
+  br label %while.cond, !llvm.loop !6
+
+while.end:                                        ; preds = %while.cond
+  ret i32 %result.0
+}

@@ -1,0 +1,24 @@
+
+[fact_from_ir]
+input=0 output=1
+exit=0
+input=1 output=1
+exit=0
+input=5 output=120
+exit=0
+input=10 output=3628800
+exit=0
+input=12 output=479001600
+exit=0
+
+[fact_from_ssa]
+input=0 output=1
+exit=0
+input=1 output=1
+exit=0
+input=5 output=120
+exit=0
+input=10 output=3628800
+exit=0
+input=12 output=479001600
+exit=0

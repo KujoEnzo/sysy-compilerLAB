@@ -1,0 +1,12 @@
+/build/
+/vendor/
+/lib.tar.gz
+
+.env
+.env.*
+.ssh/
+*.pem
+*.key
+
+__pycache__/
+*.pyc
