@@ -1,0 +1,25 @@
+mkdir -p build/riscv64
+riscv64-linux-gnu-gcc -march=rv64gc -mabi=lp64d -mcmodel=medany -O0 -c src/runtime_smoke.c -o build/riscv64/runtime_smoke.o
+mkdir -p build/runtime
+riscv64-linux-gnu-gcc -march=rv64gc -mabi=lp64d -mcmodel=medany -O0 -c vendor/lib/sylib.c -o build/runtime/sylib_rv64_linux.o
+riscv64-linux-gnu-ar rcs build/runtime/libsysy_rv64_linux.a build/runtime/sylib_rv64_linux.o
+riscv64-linux-gnu-gcc -march=rv64gc -mabi=lp64d -static build/riscv64/runtime_smoke.o build/runtime/libsysy_rv64_linux.a -o build/riscv64/runtime_smoke
+riscv64-linux-gnu-gcc -march=rv64gc -mabi=lp64d -mcmodel=medany -O0 -c src/fact_sysy.c -o build/riscv64/fact_source.o
+riscv64-linux-gnu-gcc -march=rv64gc -mabi=lp64d -static build/riscv64/fact_source.o build/runtime/libsysy_rv64_linux.a -o build/riscv64/fact_source
+llvm-as-15 ir/fact_hand.ll -o build/riscv64/fact_hand.bc
+opt-15 -passes=verify -disable-output build/riscv64/fact_hand.bc
+llc-15 -mtriple=riscv64-unknown-linux-gnu \
+	-mattr=+m,+a,+f,+d,+c -target-abi=lp64d ir/fact_hand.ll -o build/riscv64/fact_hand_ir.s
+riscv64-linux-gnu-gcc -march=rv64gc -mabi=lp64d -mcmodel=medany -O0 -c build/riscv64/fact_hand_ir.s -o build/riscv64/fact_hand_ir.o
+riscv64-linux-gnu-gcc -march=rv64gc -mabi=lp64d -static build/riscv64/fact_hand_ir.o build/runtime/libsysy_rv64_linux.a -o build/riscv64/fact_hand_ir
+riscv64-linux-gnu-gcc -march=rv64gc -mabi=lp64d -mcmodel=medany -O0 -c asm/fact_hand.s -o build/riscv64/fact_hand_asm.o
+riscv64-linux-gnu-gcc -march=rv64gc -mabi=lp64d -static build/riscv64/fact_hand_asm.o build/runtime/libsysy_rv64_linux.a -o build/riscv64/fact_hand_asm
+QEMU="qemu-riscv64" LOG_DIR="logs/local/b" RESULT_FILE="logs/local/b/results.md" \
+	sh tests/run_rv64_tests.sh \
+	build/riscv64/fact_source build/riscv64/fact_hand_ir build/riscv64/fact_hand_asm
+all 15 runs passed; results: logs/local/b/results.md
+file build/riscv64/runtime_smoke build/riscv64/fact_source build/riscv64/fact_hand_ir build/riscv64/fact_hand_asm > logs/local/b/file-types.txt
+riscv64-linux-gnu-readelf -h build/riscv64/fact_hand_asm > logs/local/b/fact_hand_asm.readelf.txt
+riscv64-linux-gnu-nm -u build/runtime/libsysy_rv64_linux.a > logs/local/b/runtime-undefined-symbols.txt
+riscv64-linux-gnu-objdump -dr build/riscv64/fact_hand_asm.o > logs/local/b/fact_hand_asm.object-disassembly.txt
+riscv64-linux-gnu-objdump -d build/riscv64/fact_hand_asm > logs/local/b/fact_hand_asm.linked-disassembly.txt

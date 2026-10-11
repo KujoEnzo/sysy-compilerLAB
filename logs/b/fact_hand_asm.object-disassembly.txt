@@ -1,0 +1,46 @@
+
+build/riscv64/fact_hand_asm.o:     file format elf64-littleriscv
+
+
+Disassembly of section .text:
+
+0000000000000000 <fact>:
+   0:	4289                	li	t0,2
+   2:	4305                	li	t1,1
+
+0000000000000004 <.Lfact_loop>:
+   4:	00554663          	blt	a0,t0,10 <.Lfact_done>
+			4: R_RISCV_BRANCH	.Lfact_done
+   8:	0253033b          	mulw	t1,t1,t0
+   c:	2285                	addiw	t0,t0,1
+   e:	bfdd                	j	4 <.Lfact_loop>
+			e: R_RISCV_RVC_JUMP	.Lfact_loop
+
+0000000000000010 <.Lfact_done>:
+  10:	851a                	mv	a0,t1
+  12:	8082                	ret
+
+0000000000000014 <main>:
+  14:	1141                	addi	sp,sp,-16
+  16:	e406                	sd	ra,8(sp)
+  18:	00000097          	auipc	ra,0x0
+			18: R_RISCV_CALL	getint
+			18: R_RISCV_RELAX	*ABS*
+  1c:	000080e7          	jalr	ra # 18 <main+0x4>
+  20:	00000097          	auipc	ra,0x0
+			20: R_RISCV_CALL	fact
+			20: R_RISCV_RELAX	*ABS*
+  24:	000080e7          	jalr	ra # 20 <main+0xc>
+  28:	00000097          	auipc	ra,0x0
+			28: R_RISCV_CALL	putint
+			28: R_RISCV_RELAX	*ABS*
+  2c:	000080e7          	jalr	ra # 28 <main+0x14>
+  30:	4529                	li	a0,10
+  32:	00000097          	auipc	ra,0x0
+			32: R_RISCV_CALL	putch
+			32: R_RISCV_RELAX	*ABS*
+  36:	000080e7          	jalr	ra # 32 <main+0x1e>
+  3a:	4501                	li	a0,0
+  3c:	60a2                	ld	ra,8(sp)
+  3e:	0141                	addi	sp,sp,16
+  40:	8082                	ret
