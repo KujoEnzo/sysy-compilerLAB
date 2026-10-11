@@ -12,10 +12,10 @@
 
 | 表示 | 文件 | 主责 |
 | --- | --- | --- |
-| SysY/C 兼容源程序 | `src/fact_sysy.c` | A |
-| 手写 LLVM IR | `ir/fact_hand.ll` | A |
-| 手写 RISC-V 汇编 | `asm/fact_hand.s` | B |
-| 构建与测试整合 | `Makefile`、`tests/run_rv64_tests.sh` | B |
+| SysY/C 兼容源程序 | `src/fact_sysy.c` | A：郝煦享（2412695） |
+| 手写 LLVM IR | `ir/fact_hand.ll` | A：郝煦享（2412695） |
+| 手写 RISC-V 汇编 | `asm/fact_hand.s` | B：田茂炜（2412784） |
+| 构建与测试整合 | `Makefile`、`tests/run_rv64_tests.sh` | B：田茂炜（2412784） |
 
 ## 预期输出
 
