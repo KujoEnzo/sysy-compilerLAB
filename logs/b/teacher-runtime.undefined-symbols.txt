@@ -1,0 +1,9 @@
+
+sylib.o:
+                 U fprintf
+                 U gettimeofday
+                 U _impure_ptr
+                 U printf
+                 U putchar
+                 U scanf
+                 U vfprintf

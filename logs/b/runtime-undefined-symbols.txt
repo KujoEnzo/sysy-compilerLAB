@@ -1,0 +1,12 @@
+
+sylib_rv64_linux.o:
+                 U fprintf
+                 U gettimeofday
+                 U __isoc99_scanf
+                 U printf
+                 U putchar
+                 U __stack_chk_fail
+                 U __stack_chk_guard
+                 U stderr
+                 U stdout
+                 U vfprintf

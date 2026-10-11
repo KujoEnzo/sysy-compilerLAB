@@ -1,0 +1,9 @@
+date=2026-10-11T21:31:08+08:00
+Linux tmw-virtual-machine 6.8.0-138-generic #138~22.04.1-Ubuntu SMP PREEMPT_DYNAMIC Fri Aug  7 13:43:15 UTC  x86_64 x86_64 x86_64 GNU/Linux
+Filesystem      Size  Used Avail Use% Mounted on
+/dev/sda3        59G   51G  4.9G  92% /
+riscv64-linux-gnu-gcc (Ubuntu 11.4.0-1ubuntu1~22.04) 11.4.0
+Ubuntu LLVM version 15.0.7
+Ubuntu LLVM version 15.0.7
+Ubuntu LLVM version 15.0.7
+qemu-riscv64 version 6.2.0 (Debian 1:6.2+dfsg-2ubuntu6.31)
