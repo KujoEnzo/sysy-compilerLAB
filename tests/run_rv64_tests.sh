@@ -10,11 +10,11 @@ qemu=${QEMU:-qemu-riscv64}
 source_exe=$1
 ir_exe=$2
 asm_exe=$3
-log_dir=${LOG_DIR:-logs/b}
-result_file=${RESULT_FILE:-tests/results.md}
+log_dir=${LOG_DIR:-logs/local/b}
+result_file=${RESULT_FILE:-$log_dir/results.md}
 tmp_dir=${TMP_DIR:-build/riscv64/test}
 
-mkdir -p "$log_dir" "$tmp_dir"
+mkdir -p "$log_dir" "$tmp_dir" "$(dirname -- "$result_file")"
 
 for exe in "$source_exe" "$ir_exe" "$asm_exe"; do
     if [ ! -x "$exe" ]; then
@@ -26,7 +26,7 @@ done
 cat > "$result_file" <<'EOF'
 # RV64 阶乘测试结果
 
-本文件由 `tests/run_rv64_tests.sh` 生成。stdout 按字节与期望文件比较；stderr 与退出码分别保留在 `logs/b/`。
+本文件由 `tests/run_rv64_tests.sh` 生成。stdout 按字节与期望文件比较；stderr 与退出码分别保留在本次指定的日志目录。默认目录为 `logs/local/b/`。
 
 | 路线 | 输入 | 预期 stdout | 实际 stdout | 退出码 | stdout 一致 |
 | --- | ---: | ---: | ---: | ---: | --- |

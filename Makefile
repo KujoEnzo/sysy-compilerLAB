@@ -15,7 +15,8 @@ LDFLAGS      := $(ARCH_FLAGS) -static
 
 BUILD_DIR    := build/riscv64
 RUNTIME_DIR  := build/runtime
-LOG_DIR      := logs/b
+LOG_DIR      ?= logs/local/b
+RESULT_FILE  ?= $(LOG_DIR)/results.md
 RUNTIME_SRC  ?= vendor/lib/sylib.c
 RUNTIME_OBJ  := $(RUNTIME_DIR)/sylib_rv64_linux.o
 RUNTIME_LIB  := $(RUNTIME_DIR)/libsysy_rv64_linux.a
@@ -76,7 +77,8 @@ $(SMOKE_EXE): $(BUILD_DIR)/runtime_smoke.o $(RUNTIME_LIB)
 smoke: check-runtime $(SMOKE_EXE) | $(LOG_DIR)
 	@printf '42\n' | $(QEMU) ./$(SMOKE_EXE) > $(LOG_DIR)/runtime_smoke.stdout 2> $(LOG_DIR)/runtime_smoke.stderr; \
 	status=$$?; printf 'exit=%s\n' "$$status" > $(LOG_DIR)/runtime_smoke.exit; \
-	test "$$status" -eq 0; diff -u tests/expected/smoke.stdout $(LOG_DIR)/runtime_smoke.stdout
+	test "$$status" -eq 0 || exit "$$status"; \
+	diff -u tests/expected/smoke.stdout $(LOG_DIR)/runtime_smoke.stdout
 
 $(BUILD_DIR)/fact_source.o: src/fact_sysy.c | $(BUILD_DIR)
 	$(CC) $(CFLAGS) -c $< -o $@
@@ -111,7 +113,8 @@ $(ASM_EXE): $(BUILD_DIR)/fact_hand_asm.o $(RUNTIME_LIB)
 asm: check-runtime $(ASM_EXE)
 
 test: all | $(LOG_DIR)
-	QEMU=$(QEMU) sh tests/run_rv64_tests.sh \
+	QEMU="$(QEMU)" LOG_DIR="$(LOG_DIR)" RESULT_FILE="$(RESULT_FILE)" \
+		sh tests/run_rv64_tests.sh \
 		$(SOURCE_EXE) $(IR_EXE) $(ASM_EXE)
 
 inspect: all environment | $(LOG_DIR)
@@ -127,6 +130,3 @@ inspect: all environment | $(LOG_DIR)
 
 clean:
 	rm -rf -- "$(BUILD_DIR)" "$(RUNTIME_DIR)"
-	@if test -d "$(LOG_DIR)"; then \
-		find "$(LOG_DIR)" -type f ! -name README.md -delete; \
-	fi

@@ -1,0 +1,1 @@
+all original logs/a, logs/b and tests/results.md preserved byte-for-byte

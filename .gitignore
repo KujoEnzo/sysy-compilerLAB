@@ -1,5 +1,7 @@
 /build/
 /vendor/
+/lib.tar.gz
+/logs/local/
 /*-transfer.tar.gz
 
 .env

@@ -1,0 +1,7 @@
+PASS: smoke rejects a nonzero program exit
+PASS: smoke rejects incorrect stdout
+PASS: smoke accepts correct stdout and exit code 0
+PASS: default smoke output preserves original B evidence
+PASS: make test forwards output locations and preserves original results
+PASS: clean removes build products and preserves all evidence
+regression failures=0; retained fixture=/tmp/sysy-build-regression.X5BZCl
